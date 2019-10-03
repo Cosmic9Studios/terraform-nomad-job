@@ -7,5 +7,5 @@ variable "file_path" {
 }
 
 variable "vars" {
-    map(string)
+    type = map(string)
 }
