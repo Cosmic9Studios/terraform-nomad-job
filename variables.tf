@@ -2,10 +2,13 @@ variable "address" {
     type = string
 }
 
-variable "file_path" { 
-    type = string
+variable "data" {
+    type = list(object({
+        file_path = string
+        vars = map(string)
+    }))
 }
 
-variable "vars" {
-    type = map(string)
+variable "nomad_depends_on" {
+    default = []
 }

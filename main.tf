@@ -8,11 +8,14 @@ provider "nomad" {
 }
 
 data "template_file" "job" {
-  template = "${file(var.file_path)}"
-  vars = var.vars
+    count = var.address == "" ? 0 : length(var.data)
+    template = "${file(var.data[count.index].file_path)}"
+    vars = var.data[count.index].vars
 }
 
 # Register a job
 resource "nomad_job" "job" {
-  jobspec = "${data.template_file.job.rendered}"
+    count = var.address == "" ? 0 : length(var.data)
+    jobspec = "${data.template_file.job[count.index].rendered}"
+    depends_on = [var.nomad_depends_on]
 }
